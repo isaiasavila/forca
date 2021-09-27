@@ -154,56 +154,78 @@ class Forca:
         Jogo da velha - Lista de palavras do seguinte endereço, somente aquelas com cinco letras ou mais
         https://www.ef.com/wwen/english-resources/english-vocabulary/top-3000-words/
         '''
+        # chama o método da classe para buscar uma palavra aleatória
         palavra_secreta = self.escolher_palavra(self.numeroAleatorio(0, 2287))
-        
+        # lista com os palpites corretos
         letras_acertadas = []
         for i in range(len(palavra_secreta)):
+            # popula a lista com a palavra escolhida
             letras_acertadas.append("_")
-        # lista com as palavras que foram digitadas
+        # lista com todos os palpites
         letras_chutadas = []
         # numero de chances
         chance = 0
+        # flag para a mensagem de vencedor
         parabens = False
         while(chance < 6):
+            # chama os métodos de construção da parte gráfica
             self.grafico_jogo_velha(chance, palavra_secreta, letras_acertadas, letras_chutadas, len(letras_chutadas))
+            # flag que não permite letras repitidas
             f = True
             while f == True:
+                # solicita uma letra e já converte ela para maiúscula
                 chute = input("Digite a letra: ").upper()
+                # verifica se a letra será repetida
                 if chute in letras_chutadas:
                     print('Letra já digitada!')
                 else:
+                    # tudo certo continua o fluxo
                     f = False
-            # pega só a primeira letra digitada e exclui o espaço
+            # pega só a primeira letra digitada e exclui o espaço para descuidos de digitação
             chute = chute.strip()[0:1]
+            # variável para verificação na palavra secreta
             index = 0
+            # flag para controlar os erros
             f2 = False
             for letra in palavra_secreta:
+                # procura na lista de letras acertadas o chute
                 if (chute.upper() == letra.upper()):
+                    # altera a lista incluindo a(s) letra(s) acertada(s)
                     letras_acertadas[index] = letra.upper()
+                    # avisa o controlador que o palpite foi um sucesso
                     f2 = True
+                # controlador para que todas as letras sejam verificadas
                 index += 1
-
+            # se o palpite não teve sucesso diminui as chances no jogo
             if f2 == False:
                 chance += 1
-
+            # adiciona a letra na lista de palpites
             letras_chutadas.append(chute.upper())
+            # se não encontrar mais o caracter _ significa que a palavra foi acertada
             if '_' not in letras_acertadas:
+                # muda o flag de controle
                 parabens = True
+                # sai do laço que está sendo controlado pela variável chance
                 break
         
+        # se foi acertada a palavra, imprime a primeira mensagem
         if parabens == True:
             self.grafico_jogo_velha(chance, palavra_secreta, letras_acertadas, letras_chutadas, (len(letras_chutadas)-1))
             print(f'Parabéns você acertou a palavra!\nFim da partida...')
         else:
+            # caso contrário mostra a palavra secreta correta
             self.grafico_jogo_velha(chance, palavra_secreta, letras_acertadas, letras_chutadas, (len(letras_chutadas)-1))
             print(f'A palavra secreta era: {palavra_secreta.upper()}\nFim da partida...')
 
 while True:
+    # objeto instanciado
     jogo = Forca()
+    # chama o método para mostrar o jogo
     jogo.jogo_velha()
+    # qualquer digito finaliza o jogo
     if input('Jogar novamente? <enter> para continuar.\n') == '':
         jogo.jogo_velha()
     else:
+        # Merchandising do programador, sim num futuro essa empresa pode existir
         jogo.saida(0,9)
         break
-        
